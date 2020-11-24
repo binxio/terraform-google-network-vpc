@@ -40,11 +40,6 @@ locals {
       next_hop_gateway = "default-internet-gateway"
       next_hop_ip      = "127.0.0.1"
     }
-    "vpn" = {
-      dest_range          = "127.0.0.0/8"
-      description         = "VPN hop"
-      next_hop_vpn_tunnel = "http://www.googleapis.com/compute/v1/projects/ft-sandbox-global-wode/regions/europe-west4/vpnGateways/woutertest"
-    }
   }
 }
 
