@@ -3,6 +3,7 @@
 #---------------------------------------------------------------------------------------------
 
 locals {
+  owner       = var.owner
   project     = var.project
   environment = var.environment
 
@@ -44,6 +45,7 @@ locals {
   labels = {
     "project" = substr(replace(lower(local.project), "/[^\\p{Ll}\\p{Lo}\\p{N}_-]+/", "_"), 0, 63)
     "env"     = substr(replace(lower(local.environment), "/[^\\p{Ll}\\p{Lo}\\p{N}_-]+/", "_"), 0, 63)
+    "owner"   = substr(replace(lower(local.owner), "/[^\\p{Ll}\\p{Lo}\\p{N}_-]+/", "_"), 0, 63)
     "creator" = "terraform"
   }
 

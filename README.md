@@ -6,7 +6,7 @@ Core Version Constraints:
 
 Provider Requirements:
 * **google (`hashicorp/google`):** (any version)
-* **google-beta (`hashicorp/google-beta`):** (any version)
+* **google-beta:** (any version)
 
 ## Input Variables
 * `environment` (required): Company environment for which the resources are created (e.g. dev, tst, acc, prd, all).
@@ -22,6 +22,7 @@ Provider Requirements:
 * `vpc_peers` (required): Map of VPC Peers to be created. The key will be used for the name.
 
 ## Output Values
+* `compute_global_addresses`: Compute global addresses created for service networking connections
 * `map`: outputs for all google_compute_subnetwork created
 * `route_defaults`: The generic defaults used for subnet settings
 * `subnet_defaults`: The generic defaults used for subnet settings
@@ -30,7 +31,7 @@ Provider Requirements:
 * `vpc_peer_defaults`: The generic defaults used for subnet settings
 
 ## Managed Resources
-* `google_compute_global_address.map` from `google-beta`
+* `google_compute_global_address.map` from `google`
 * `google_compute_network.vpc` from `google`
 * `google_compute_network_peering.map` from `google`
 * `google_compute_route.map` from `google`

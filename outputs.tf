@@ -22,5 +22,10 @@ output "route_defaults" {
 
 output "map" {
   description = "outputs for all google_compute_subnetwork created"
-  value       = { for key, subnet in google_compute_subnetwork.map : key => subnet }
+  value       = google_compute_subnetwork.map
+}
+
+output "compute_global_addresses" {
+  description = "Compute global addresses created for service networking connections"
+  value       = google_compute_global_address.map
 }
