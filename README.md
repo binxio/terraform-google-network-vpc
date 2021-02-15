@@ -13,16 +13,17 @@ Provider Requirements:
 * `network_name` (required): Name of the VPC
 * `owner` (required): Owner of the resource. This variable is used to set the 'owner' label. Will be used as default for each subnet, but can be overridden using the subnet settings.
 * `project` (required): Company project name.
-* `route_defaults` (required): Default settings to be used for your routes so you don't need to provide them for each route separately.
-* `routes` (required): Map of custom routes to be created.
-* `service_networking_connection` (required): map for private_ip_address settings to use for creation of a service_networking_connection
-* `subnet_defaults` (required): Default settings to be used for your subnets so you don't need to provide them for each subnet separately.
-* `subnets` (required): Map of subnets to be created. The key will be used for the subnet name so it should describe the subnet purpose. The value can be a map with keys to override default settings.
-* `vpc_peer_defaults` (required): Default settings to be used for your vpc peers so you don't need to provide them for each vpc peer separately.
-* `vpc_peers` (required): Map of VPC Peers to be created. The key will be used for the name.
+* `route_defaults` (default `null`): Default settings to be used for your routes so you don't need to provide them for each route separately.
+* `routes` (default `{}`): Map of custom routes to be created.
+* `service_networking_connection` (default `{}`): map for private_ip_address settings to use for creation of a service_networking_connection
+* `subnet_defaults` (default `null`): Default settings to be used for your subnets so you don't need to provide them for each subnet separately.
+* `subnets` (default `{}`): Map of subnets to be created. The key will be used for the subnet name so it should describe the subnet purpose. The value can be a map with keys to override default settings.
+* `vpc_peer_defaults` (default `null`): Default settings to be used for your vpc peers so you don't need to provide them for each vpc peer separately.
+* `vpc_peers` (default `{}`): Map of VPC Peers to be created. The key will be used for the name.
 
 ## Output Values
 * `compute_global_addresses`: Compute global addresses created for service networking connections
+* `debug`
 * `map`: outputs for all google_compute_subnetwork created
 * `route_defaults`: The generic defaults used for subnet settings
 * `subnet_defaults`: The generic defaults used for subnet settings
@@ -31,7 +32,7 @@ Provider Requirements:
 * `vpc_peer_defaults`: The generic defaults used for subnet settings
 
 ## Managed Resources
-* `google_compute_global_address.map` from `google`
+* `google_compute_global_address.map` from `google-beta`
 * `google_compute_network.vpc` from `google`
 * `google_compute_network_peering.map` from `google`
 * `google_compute_route.map` from `google`

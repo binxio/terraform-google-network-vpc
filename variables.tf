@@ -100,11 +100,12 @@ variable "route_defaults" {
 variable "service_networking_connection" {
   description = "map for private_ip_address settings to use for creation of a service_networking_connection"
   type = map(object({
-    private_ip_address = object({
+    reserved_peering_ranges = map(object({
+      address       = string
       purpose       = string
       prefix_length = number
       address_type  = string
-    })
+    }))
   }))
 
   default = {}

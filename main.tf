@@ -82,6 +82,19 @@ locals {
       }
     )
   }
+  service_networking_addresses = flatten([
+    for conn, settings in var.service_networking_connection :
+    {
+      for range, range_settings in try(settings.reserved_peering_ranges, {}) :
+      format("%s|%s", conn, range) => merge(
+        range_settings,
+        {
+          name = range
+          conn = conn
+        }
+      )
+    }
+  ])[0]
 }
 
 #---------------------------------------------------------------------------------------------
@@ -174,26 +187,33 @@ resource "google_compute_route" "map" {
   next_hop_ilb        = each.value.next_hop_ilb
 }
 
+output "debug" {
+  value = local.service_networking_addresses
+}
 resource "google_compute_global_address" "map" {
-  for_each = var.service_networking_connection
+  provider = google-beta
+  for_each = local.service_networking_addresses
 
-  name          = each.key
+  name          = format("%s-%s", each.value.conn, each.value.name)
   description   = "Reserved for servicenetworking connection"
-  purpose       = each.value.private_ip_address.purpose
-  prefix_length = each.value.private_ip_address.prefix_length
-  address_type  = each.value.private_ip_address.address_type
+  purpose       = each.value.purpose
+  address       = try(each.value.address, null)
+  ip_version    = try(each.value.ip_version, "IPV4")
+  prefix_length = try(each.value.prefix_length, null)
+  address_type  = each.value.address_type
   network       = google_compute_network.vpc.self_link
+  labels        = merge(local.labels, { "purpose" = each.value.name }, try(each.value.labels, {}))
 }
 
 resource "google_service_networking_connection" "map" {
-  for_each = length(keys(var.service_networking_connection)) > 0 ? toset(["servicenetworking"]) : []
+  for_each = var.service_networking_connection
 
   provider = google-beta
 
   network = google_compute_network.vpc.self_link
   service = "servicenetworking.googleapis.com"
   reserved_peering_ranges = [
-    for address in google_compute_global_address.map : address.name
+    for key, address in google_compute_global_address.map : address.name if local.service_networking_addresses[key].conn == each.key
   ]
 
   depends_on = [
