@@ -38,7 +38,7 @@ variable "vpc_peers" {
 variable "vpc_peer_defaults" {
   description = "Default settings to be used for your vpc peers so you don't need to provide them for each vpc peer separately."
   type = object({
-    peer_project_id      = string
+    peer_project         = string
     peer_network         = string
     export_custom_routes = bool
     import_custom_routes = bool

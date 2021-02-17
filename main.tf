@@ -9,7 +9,7 @@ locals {
 
   # Startpoint for our VPC defaults
   module_vpc_peer_defaults = {
-    peer_project_id      = null
+    peer_project         = null
     peer_network         = null
     export_custom_routes = false
     import_custom_routes = false
@@ -82,7 +82,7 @@ locals {
       }
     )
   }
-  service_networking_addresses = flatten([
+  service_networking_addresses = try(flatten([
     for conn, settings in var.service_networking_connection :
     {
       for range, range_settings in try(settings.reserved_peering_ranges, {}) :
@@ -94,7 +94,7 @@ locals {
         }
       )
     }
-  ])[0]
+  ])[0], {})
 }
 
 #---------------------------------------------------------------------------------------------
